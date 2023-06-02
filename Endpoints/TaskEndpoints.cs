@@ -45,6 +45,17 @@ namespace ApiTask.Endpoints
             });
 
 
+            //Delete task
+            app.MapDelete("tasks/{id}", async (GetConnection connectionGetter, int id) =>
+            {
+                using var con = await connectionGetter();
+                var task = con.Get<Task>(id);
+                if (task is null) return Results.NotFound();
+                con.Delete(task);
+                return Results.Ok(task);
+            });
+
+
         }
     }
 }
